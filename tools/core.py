@@ -42,3 +42,28 @@ class PCA(object):
         """
         return np.dot(data-self.feature_means, self.eigenvectors[:, :n_components])
 
+
+class Cluster(object):
+
+    def __init__(self, k):
+        self.k = k
+
+    def fit(self, data, iterations=10):
+        n_dims = data.shape[0]
+        # randomly assign cluster centers
+        centroids = [helpers.random_vector_range(np.amin(data, axis=0), np.amax(data, axis=0), n_dims) for i in range(self.k)]
+        clusters = [[] for i in range(self.k)]
+
+        for it in range(iterations):
+            for vec in data:
+                closest_centroid = -1
+                closest_distance = np.inf
+                for i in range(len(centroids)):
+                    dist = helpers.vec_distance(centroids[i], vec)
+                    if dist < closest_distance:
+                        closest_distance = dist
+                        closest_centroid = i
+                clusters[closest_centroid].append(vec)
+
+            for i in range(len(centroids)):
+                centroids[i] = helpers.mean_vector(clusters[i])
