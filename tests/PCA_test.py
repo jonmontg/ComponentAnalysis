@@ -1,4 +1,3 @@
-from tools.helpers import covariance_matrix
 import matplotlib.pyplot as plt
 from tools.core import PCA as my_PCA
 from sklearn.decomposition import PCA as benchmark_PCA
